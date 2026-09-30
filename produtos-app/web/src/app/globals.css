@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #ffffff;
+  --wash: #f2f4f3;
+  --ink: #1c2b24;
+  --muted: #5f6f68;
+  --rule: #dce3df;
+  --accent: #0b6b4f;
+  --alert: #a3351a;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #121614;
+    --wash: #1a211d;
+    --ink: #e8edea;
+    --muted: #9aaaa2;
+    --rule: #2a342e;
+    --accent: #4bbe95;
+    --alert: #e4795c;
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-wash: var(--wash);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-accent: var(--accent);
+  --color-alert: var(--alert);
+  --font-sans: var(--font-archivo);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+}
+
+/* Números de preço e estoque alinham em coluna: dígitos de largura fixa. */
+.numeros {
+  font-variant-numeric: tabular-nums;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
