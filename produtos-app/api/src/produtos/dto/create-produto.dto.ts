@@ -33,8 +33,11 @@ export class CreateProdutoDto {
   @Min(0)
   estoque?: number;
 
+  // Só aceita chaves no formato que a própria API gera, para o cliente não
+  // apontar o produto para um objeto qualquer do bucket.
   @IsOptional()
-  @IsString()
-  @MaxLength(500)
+  @Matches(/^produtos\/[0-9a-f-]{36}\.(jpg|png|webp)$/, {
+    message: 'imagemKey inválida',
+  })
   imagemKey?: string | null;
 }

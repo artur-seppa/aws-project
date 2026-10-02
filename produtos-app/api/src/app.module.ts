@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { migrations } from './database/migrations/index.js';
 import { HealthModule } from './health/health.module.js';
+import { ImagensModule } from './imagens/imagens.module.js';
 import { ProdutosModule } from './produtos/produtos.module.js';
 
 @Module({
@@ -32,6 +33,7 @@ import { ProdutosModule } from './produtos/produtos.module.js';
       }),
     }),
     HealthModule,
+    ImagensModule,
     ProdutosModule,
   ],
 })
