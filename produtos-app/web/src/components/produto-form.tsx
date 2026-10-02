@@ -8,6 +8,8 @@ import type { EstadoDoFormulario } from '@/lib/formulario';
 import { estadoInicial } from '@/lib/formulario';
 import type { Produto } from '@/lib/produtos';
 
+import { CampoDeImagem } from './campo-de-imagem';
+
 interface Props {
   action: (
     estado: EstadoDoFormulario,
@@ -15,6 +17,8 @@ interface Props {
   ) => Promise<EstadoDoFormulario>;
   produto?: Produto;
   textoDoBotao: string;
+  // Falso quando S3_BUCKET não está configurado: o campo some, o resto fica.
+  uploadHabilitado: boolean;
 }
 
 function Salvar({ texto }: { texto: string }) {
@@ -36,7 +40,12 @@ const campo =
   'w-full border border-rule bg-paper px-3 py-2 text-[15px] text-ink placeholder:text-muted';
 const rotulo = 'block text-sm text-muted';
 
-export function ProdutoForm({ action, produto, textoDoBotao }: Props) {
+export function ProdutoForm({
+  action,
+  produto,
+  textoDoBotao,
+  uploadHabilitado,
+}: Props) {
   const [estado, formAction] = useActionState(action, estadoInicial);
 
   return (
@@ -115,6 +124,13 @@ export function ProdutoForm({ action, produto, textoDoBotao }: Props) {
           />
         </div>
       </div>
+
+      {uploadHabilitado && (
+        <CampoDeImagem
+          imagemKeyInicial={produto?.imagemKey ?? null}
+          imagemUrlInicial={produto?.imagemUrl ?? null}
+        />
+      )}
 
       <div className="flex items-center gap-4 pt-1">
         <Salvar texto={textoDoBotao} />

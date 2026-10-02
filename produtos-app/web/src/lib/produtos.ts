@@ -5,6 +5,8 @@ export interface Produto {
   preco: string;
   estoque: number;
   imagemKey: string | null;
+  // URL assinada e temporária, montada pela API na hora de responder.
+  imagemUrl: string | null;
   criadoEm: string;
   atualizadoEm: string;
 }
@@ -64,4 +66,19 @@ export async function buscarProduto(id: number): Promise<Produto | null> {
   if (!resposta.ok) await lerErro(resposta);
 
   return resposta.json();
+}
+
+export async function imagemHabilitada(): Promise<boolean> {
+  try {
+    const resposta = await fetch(`${API_URL}/imagens/configuracao`, {
+      cache: 'no-store',
+    });
+
+    if (!resposta.ok) return false;
+
+    return (await resposta.json()).habilitado === true;
+  } catch {
+    // Se a API não responder, o front só esconde o campo de imagem.
+    return false;
+  }
 }

@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 
 import { ProdutoForm } from '@/components/produto-form';
-import { buscarProduto } from '@/lib/produtos';
+import { buscarProduto, imagemHabilitada } from '@/lib/produtos';
 
 import { atualizarProduto } from '../../actions';
 
@@ -23,6 +23,7 @@ export default async function EditarProdutoPage({
           action={atualizarProduto}
           produto={produto}
           textoDoBotao="Salvar alterações"
+          uploadHabilitado={await imagemHabilitada()}
         />
       </div>
     </div>

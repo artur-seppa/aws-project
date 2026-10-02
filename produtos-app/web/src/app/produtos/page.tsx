@@ -1,8 +1,8 @@
-import Link from 'next/link';
+import Link from "next/link";
 
-import { BotaoRemover } from '@/components/botao-remover';
-import { formatarPreco } from '@/lib/formato';
-import { listarProdutos } from '@/lib/produtos';
+import { BotaoRemover } from "@/components/botao-remover";
+import { formatarPreco } from "@/lib/formato";
+import { listarProdutos } from "@/lib/produtos";
 
 const LIMITE = 20;
 
@@ -10,7 +10,7 @@ const LIMITE = 20;
 // navegador e a página já vai renderizada com os dados.
 export default async function ProdutosPage({
   searchParams,
-}: PageProps<'/produtos'>) {
+}: PageProps<"/produtos">) {
   const { cursor } = await searchParams;
   const cursorAtual = Number(cursor) || undefined;
 
@@ -33,7 +33,7 @@ export default async function ProdutosPage({
 
       {dados.length === 0 ? (
         <p className="mt-10 text-muted">
-          Nenhum produto por aqui ainda.{' '}
+          Nenhum produto por aqui ainda.{" "}
           <Link href="/produtos/novo" className="text-accent underline">
             Cadastre o primeiro
           </Link>
@@ -53,19 +53,31 @@ export default async function ProdutosPage({
             {dados.map((produto) => (
               <tr key={produto.id} className="border-b border-rule align-top">
                 <td className="py-3 pr-4">
-                  <span className="text-[15px]">{produto.nome}</span>
-                  {produto.descricao && (
-                    <span className="mt-0.5 block max-w-prose text-sm text-muted">
-                      {produto.descricao}
-                    </span>
-                  )}
+                  <div className="flex items-start gap-3">
+                    {produto.imagemUrl && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={produto.imagemUrl}
+                        alt=""
+                        className="h-10 w-10 shrink-0 border border-rule object-cover"
+                      />
+                    )}
+                    <div>
+                      <span className="text-[15px]">{produto.nome}</span>
+                      {produto.descricao && (
+                        <span className="mt-0.5 block max-w-prose text-sm text-muted">
+                          {produto.descricao}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </td>
                 <td className="numeros py-3 pr-4 text-right text-[15px] whitespace-nowrap">
                   {formatarPreco(produto.preco)}
                 </td>
                 <td
                   className={`numeros py-3 pr-4 text-right text-[15px] ${
-                    produto.estoque === 0 ? 'text-alert' : ''
+                    produto.estoque === 0 ? "text-alert" : ""
                   }`}
                 >
                   {produto.estoque}

@@ -9,8 +9,10 @@ import { API_URL, ErroDaApi } from '@/lib/produtos';
 
 function montarCorpo(formData: FormData) {
   const descricao = String(formData.get('descricao') ?? '').trim();
+  const imagemKey = String(formData.get('imagemKey') ?? '').trim();
 
   return {
+    imagemKey: imagemKey === '' ? null : imagemKey,
     nome: String(formData.get('nome') ?? '').trim(),
     // String vazia no formulário significa "sem descrição", não a string "".
     descricao: descricao === '' ? null : descricao,
@@ -79,4 +81,36 @@ export async function removerProduto(formData: FormData): Promise<void> {
   }
 
   revalidatePath('/produtos');
+}
+
+export interface UrlDeUpload {
+  url: string;
+  key: string;
+}
+
+/**
+ * Só pede a URL à API. O arquivo em si vai do navegador direto para o S3 —
+ * nem o Next nem a API veem os bytes.
+ */
+export async function pedirUrlDeUpload(
+  contentType: string,
+): Promise<UrlDeUpload | { erro: string }> {
+  const resposta = await fetch(`${API_URL}/imagens/url-de-upload`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contentType }),
+  });
+
+  if (!resposta.ok) {
+    const corpo = await resposta.json().catch(() => null);
+    const message = corpo?.message;
+
+    return {
+      erro: Array.isArray(message)
+        ? message.join('; ')
+        : (message ?? 'Não foi possível preparar o envio.'),
+    };
+  }
+
+  return resposta.json();
 }
