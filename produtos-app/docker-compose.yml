@@ -33,6 +33,13 @@ services:
       PORT: 3333
       # Origem do navegador, não o nome do serviço: o CORS é checado pelo browser.
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:3000}
+      # Imagens no S3. Sem S3_BUCKET, a API sobe igual e só o upload fica off.
+      S3_BUCKET: ${S3_BUCKET:-}
+      AWS_REGION: ${AWS_REGION:-us-east-2}
+      # Na EC2, o certo é não passar chave nenhuma e usar uma IAM role na
+      # instância: o SDK pega credenciais temporárias sozinho pela cadeia padrão.
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
     ports:
       - "${API_PORT:-3333}:3333"
     depends_on:
